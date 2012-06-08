@@ -14,12 +14,15 @@ $(function() {
   })
 
   var BalanceView = Parse.View.extend({
-    tagname: "tr",
+    tagName: "tr",
 
     template: _.template($('#balance-template').html()),
 
+    initialize: function() {},
+
     render: function() {
-      $(this.template(this.model.toJSON()));
+      var rowClass = this.model.get("amount") > 0 ? 'owes-you' : 'owe';
+      $(this.el).addClass(rowClass).html(this.template(this.model.toJSON()));
       return this;
     }
   })
@@ -35,10 +38,9 @@ $(function() {
   });
 
   var TransactionView = Parse.View.extend({
-    tagname: "li",
-
+    tagName: "li",
     template: _.template($('#transaction-template').html()),
-
+    initialize: function() {},
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
@@ -54,7 +56,7 @@ $(function() {
     
     initialize: function() {
 
-      _.bindAll(this, 'enterTransaction', 'addOne', 'addAll', 'render');
+      _.bindAll(this, 'enterTransaction', 'reBalance', 'addOneTransaction', 'addAll', 'render');
 
       // Get transactions for the user
       this.transactions = new TransactionList();
@@ -62,10 +64,18 @@ $(function() {
       this.transactions.query = new Parse.Query(Transaction);
       this.transactions.query.equalTo("user", Parse.User.current());
 
-      this.transactions.bind('add',     this.addOne);
+      this.transactions.bind('add',     this.addOneTransaction);
+      this.transactions.bind('add',     this.reBalance);
       this.transactions.bind('reset',   this.addAll);
       this.transactions.bind('all',     this.render);
       this.transactions.fetch();
+
+      // Get balances for the user
+      this.balances = new BalanceList();
+      this.balances.query = new Parse.Query(Balance);
+      this.balances.query.equalTo("user", Parse.User.current());
+      this.balances.fetch();
+      
 
       // Draw
       this.$el.html(_.template($("#main-view-template").html()));
@@ -74,17 +84,46 @@ $(function() {
     },
 
     render: function() {
+      this.transactions.each(this.reBalance);
       this.delegateEvents();
     },
 
-    addOne: function(transaction) {
+    reBalance: function(transaction) {
+      var bal = this.balances.filter( function(b) {
+        return b.get("targetUser") === transaction.get("targetUser");
+      });
+
+      if(bal.length === 0) {
+        this.balances.create({
+          targetUser: transaction.get("targetUser"),
+          ACL: new Parse.ACL(Parse.User.current()),
+          amount: transaction.get("amount"),
+          user: Parse.User.current()
+        });
+      } else {
+        var oldBalance = bal[0].get("balance");
+        var newBalance = oldBalance + transaction.get("balance");
+        
+        this.balances.getByCid(bal[0].cid).set("balance", newBalance).save();
+      }
+
+      // redraw balances table
+      this.$("tr").not(".header-row").empty();
+      this.balances.each(function(balance) {
+        var view = new BalanceView({model: balance});
+        this.$(".outstanding-balances-list").append(view.render().el);  
+      });
+      
+    },
+
+    addOneTransaction: function(transaction) {
       var view = new TransactionView({model: transaction});
       this.$(".recent-transaction-list").append(view.render().el);
     },
 
     addAll: function(collection, filter) {
       this.$(".recent-transction-list").empty();
-      this.transactions.each(this.addOne);
+      this.transactions.each(this.addOneTransaction);
     },
 
     enterTransaction: function() {
@@ -131,7 +170,8 @@ $(function() {
   var LogInView = Parse.View.extend({
     events: {
       "submit form.login-form": "logIn",
-      "submit form.signup-form": "signUp"
+      "submit form.signup-form": "signUp",
+      "submit form.login-signup-form": "logInOrSignUp"
     },
 
     el: ".content",
@@ -155,6 +195,7 @@ $(function() {
 
         error: function(user, error) {
           self.$(".login-form .error").html("Invalid username or password. Please try again.").show();
+          console.log(error);
           this.$(".login-form button").removeAttr("disabled");
         }
       });
@@ -210,7 +251,6 @@ $(function() {
     render: function() {
       if (Parse.User.current()) {
         new ManageTransactionsView();
-        new UserView();
       } else {
         new LogInView();
       }

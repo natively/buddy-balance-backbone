@@ -1,142 +1,108 @@
 <!doctype html>
-<head>
-  <!-- we're so meta -->
-  <title>Buddy Balance Beta</title>
-  <meta charset="utf-8">
-  <meta name="description" content="My Parse App">
-  <meta name="viewport" content="width=device-width">
-
-  <!-- Stylesheets -->
-  <link href="css/styles.css" rel="stylesheet" type="text/css" >
-
-  <!-- Javascripts -->
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="app/lib/underscore-min.js"></script>
-  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.0.min.js"></script>
-  <script type="text/javascript" src="app/lib/bootstrap.js"></script>
-  <script type="text/javascript" src="app/lib/app.js"></script>
-
-</head>
-
-<body>
-  <header>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="#">Buddy Balance</a>
-          <div class="user-options pull-right"></div>
+  <head>
+    <!-- we're so meta -->
+    <title>Buddy Balance Beta</title>
+    <meta charset="utf-8">
+    <meta name="description" content="My Parse App">
+    <meta name="viewport" content="width=device-width">
+    <!-- Stylesheets -->
+    <link href="css/styles.css" rel="stylesheet" type="text/css" >
+    <!-- Javascripts -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="app/lib/underscore-min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.0.min.js"></script>
+    <script type="text/javascript" src="app/lib/bootstrap.js"></script>
+    <script type="text/javascript" src="app/lib/app.js"></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <header>
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="#">Buddy Balance</a>
+            <!-- User Options Goes Here -->
+            <div class="user-options pull-right"></div>
+          </div>
         </div>
       </div>
+    </header>
+    <!-- Main Container - Everything goes here -->
+    <div id="BuddyBalanceApp">
+      <div class="container">
+        <div class="content">
+      </div>
     </div>
-  </header>
-  
-  <div id="BuddyBalanceApp">
-    <div class="container">
-      <div class="content">
-    </div>
-  </div>
-
-  <script type="text/template" id="user-template">
-    Signed in as <%= Parse.User.current().get("username") %>
-    (<a href="#" class="sign-out" >Sign Out</a>)
-  </script>
-
-  <!-- Login/Signup Template -->
-  <script type="text/template" id="login-template">
-    <div class="login hero-unit">
-      <form class="login-form">
-        <h2>Login</h2>
-        <div class="error" style="display:none"></div>
-        <input type="text" id="login-username" placeholder="Email" />
-        <input type="password" id="login-password" placeholder="Password" />
-        <br />
-        <button>Log In</button>
-      </form>
-
-      <form class="signup-form">
-        <h2>Sign Up</h2>
-        <div class="error" style="display:none"></div>
-        <input type="text" id="signup-email" placeholder="Email" />
-        <input type="password" id="signup-password" placeholder="password" />
-        <br />
-        <button>Sign Up</button>
-      </form>
-    </div>
-  </script>
-
-  <!-- New Transaction Template -->
-  <script type="text/template" id="main-view-template">
-    <div class="row">
-      <div class="span3 new-transaction">
-        <h6>New Transaction</h6>
-        <input type="text" id="transaction-target" placeholder="Buddy's Email" />
-        <div class="btn-group" data-toggle="buttons-radio">
-          <button class="btn btn-left btn-success" id="to-me">
-            <i class="icon-minus icon-white"></i> Paid Me
-          </button>
-          <button class="btn btn-white active" id="to-them">
-            <i class="icon-plus icon-white"></i> Paid Them
+    <!-- Template for the "sign out" part at the top -->
+    <script type="text/template" id="user-template">
+      Signed in as <%= Parse.User.current().get("username") %>
+      (<a href="#" class="sign-out" >Sign Out</a>)
+    </script>
+    <!-- Login/Signup Template -->
+    <script type="text/template" id="login-template">
+      <div class="login hero-unit">
+        <form class="login-form">
+          <div class="error" style="display:none"></div>
+          <input type="text" id="login-username" placeholder="Email" />
+          <input type="password" id="login-password" placeholder="Password" />
+          <button class="btn btn-inverse">Log In</button>
+        </form>
+        <form class="signup-form">
+          <div class="error" style="display:none"></div>
+          <input type="text" id="signup-email" placeholder="Email" />
+          <input type="password" id="signup-password" placeholder="Password" />
+          <button class="btn">Sign Up</button>
+        </form>
+      </div>
+    </script>
+    <!-- New Transaction Template -->
+    <script type="text/template" id="main-view-template">
+      <div class="row">
+        <div class="span3 new-transaction">
+          <h6>New Transaction</h6>
+          <input type="text" id="transaction-target" placeholder="Buddy's Email" />
+          <div class="btn-group" data-toggle="buttons-radio">
+            <button class="btn btn-left" id="to-me">
+              <i class="icon-chevron-down"></i> Paid Me
+            </button>
+            <button class="btn btn-white active" id="to-them">
+              <i class="icon-chevron-up"></i> Paid Them
+            </button>
+          </div>
+          <input type="text" id="transaction-amount" placeholder="Amount (example: 34.50)" />
+          <input type="text" id="transaction-memo" placeholder="Memo (example: Beer)" />
+          <button class="btn btn-inverse enter-transaction">
+            <i class="icon-retweet icon-white"></i>
+            Balance!
           </button>
         </div>
-        <input type="text" id="transaction-amount" placeholder="Amount (example: 34.50)" />
-        <input type="text" id="transaction-memo" placeholder="Memo (example: Beer)" />
-        <button class="btn btn-inverse enter-transaction">Balance!</button>
+        <div class="span6">
+          <h6>Outstanding Balances</h6>
+            <table class="table outstanding-balances-list">
+              <tr class="header-row">
+                <th>Status</th>
+                <th>Buddy</th>
+                <th>Balance</th>
+              </tr>
+            </table>
+        </div>
+        <div class="span3">
+          <h6>Recent Transactions</h6>
+          <ul class="unstyled recent-transaction-list"></ul>
+        </div>
       </div>
-      <div class="span6 outstanding-balances-list">
-        <h6>Outstanding Balances</h6>
-          <table class="table balances-table">
-            <tr>
-              <th>Status</th>
-              <th>Buddy</th>
-              <th>Balance</th>
-            </tr>
-            <tr class="owe">
-              <td>YOU OWE</td>
-              <td>Jonathan Houck</td>
-              <td>-56</td>
-            </tr>
-            <tr class="owe">
-              <td>YOU OWE</td>
-              <td>Matthew Wickman</td>
-              <td>-56</td>
-            </tr>
-            <tr class="owe">
-              <td>YOU OWE</td>
-              <td>Eric Wright</td>
-              <td>-56</td>
-            </tr>
-            <tr class="owes-you">
-              <td>OWES YOU</td>
-              <td>Brian Chia</td>
-              <td>+42</td>
-            </tr>
-          </table>
-      </div>
-      <div class="span3 recent-transaction-list">
-        <h6>Recent Transactions</h6>
-      </div>
-    </div>
-  </script>
-
-  <!-- Individual Balance Item Template -->
-  <script type="text/template" id="balance-template">
-    <tr>
+    </script>
+    <!-- Individual Balance Item Template -->
+    <script type="text/template" id="balance-template">
+      <td><%= amount > 0 ? "OWES YOU" : "YOU OWE" %></td>
       <td><%= targetUser %></td>
-      <td><%= balance %></td>
-    </tr>
-  </script>
-
-  <!-- Individual Transaction Item Template -->
-  <script type="text/template" id="transaction-template">
-    <ul class="unstyled">
-      <li>
-        <%= amount %>
-        <%= targetUser %>
-        <%= memo %>
-      </li>
-    </ul>
-  </script>
-
-</body>
-
+      <td>$ <%= amount %></td>
+    </script>
+    <!-- Individual Transaction Item Template -->
+    <script type="text/template" id="transaction-template"> 
+      $ <%= amount %>
+      <%= targetUser %>
+      <%= memo %>
+    </script>
+  </body>
 </html>
