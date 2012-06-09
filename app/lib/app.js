@@ -79,12 +79,10 @@ $(function() {
 
       // Draw
       this.$el.html(_.template($("#main-view-template").html()));
-      new UserView();
       this.render();
     },
 
     render: function() {
-      this.transactions.each(this.reBalance);
       this.delegateEvents();
     },
 
@@ -92,8 +90,7 @@ $(function() {
       var bal = this.balances.filter( function(b) {
         return b.get("targetUser") === transaction.get("targetUser");
       });
-
-      if(bal.length === 0) {
+      if( bal.length === 0 ) {
         this.balances.create({
           targetUser: transaction.get("targetUser"),
           ACL: new Parse.ACL(Parse.User.current()),
@@ -101,8 +98,8 @@ $(function() {
           user: Parse.User.current()
         });
       } else {
-        var oldBalance = bal[0].get("balance");
-        var newBalance = oldBalance + transaction.get("balance");
+        var oldBalance = bal[0].get("amount");
+        var newBalance = oldBalance + transaction.get("amount");
         
         this.balances.getByCid(bal[0].cid).set("balance", newBalance).save();
       }
@@ -170,8 +167,7 @@ $(function() {
   var LogInView = Parse.View.extend({
     events: {
       "submit form.login-form": "logIn",
-      "submit form.signup-form": "signUp",
-      "submit form.login-signup-form": "logInOrSignUp"
+      "submit form.signup-form": "signUp"
     },
 
     el: ".content",
@@ -189,6 +185,7 @@ $(function() {
       Parse.User.logIn(username, password, {
         success: function(user) {
           new ManageTransactionsView();
+          new UserView();
           self.undelegateEvents();
           delete self;
         },
@@ -217,6 +214,7 @@ $(function() {
       Parse.User.signUp(username, password, { ACL: new Parse.ACL(), email: email }, {
         success: function(user) {
           new ManageTransactionsView();
+          new UserView();
           self.undelegateEvents();
           delete self;
         },
@@ -250,6 +248,7 @@ $(function() {
 
     render: function() {
       if (Parse.User.current()) {
+        new UserView();
         new ManageTransactionsView();
       } else {
         new LogInView();
