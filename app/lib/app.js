@@ -56,7 +56,14 @@ $(function() {
     
     initialize: function() {
 
-      _.bindAll(this, 'enterTransaction', 'reBalance', 'addOneTransaction', 'addAll', 'render');
+      _.bindAll(this,
+        'enterTransaction',
+        'reBalance',
+        'renderBalances',
+        'addOneTransaction',
+        'addAll',
+        'render'
+      );
 
       // Get transactions for the user
       this.transactions = new TransactionList();
@@ -74,8 +81,9 @@ $(function() {
       this.balances = new BalanceList();
       this.balances.query = new Parse.Query(Balance);
       this.balances.query.equalTo("user", Parse.User.current());
-      this.balances.fetch();
       
+      this.balances.bind('all',   this.renderBalances);
+      this.balances.fetch();
 
       // Draw
       this.$el.html(_.template($("#main-view-template").html()));
@@ -84,6 +92,14 @@ $(function() {
 
     render: function() {
       this.delegateEvents();
+    },
+
+    renderBalances: function() {
+      this.$("tr").not(".header-row").empty();
+      this.balances.each(function(balance) {
+        var view = new BalanceView({model: balance});
+        this.$(".outstanding-balances-list").append(view.render().el);  
+      });
     },
 
     reBalance: function(transaction) {
@@ -101,16 +117,10 @@ $(function() {
         var oldBalance = bal[0].get("amount");
         var newBalance = oldBalance + transaction.get("amount");
         
-        this.balances.getByCid(bal[0].cid).set("balance", newBalance).save();
+        this.balances.getByCid(bal[0].cid).set("amount", newBalance).save();
       }
-
       // redraw balances table
-      this.$("tr").not(".header-row").empty();
-      this.balances.each(function(balance) {
-        var view = new BalanceView({model: balance});
-        this.$(".outstanding-balances-list").append(view.render().el);  
-      });
-      
+      this.renderBalances();
     },
 
     addOneTransaction: function(transaction) {

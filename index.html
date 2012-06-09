@@ -30,7 +30,7 @@
     <!-- Main Container - Everything goes here -->
     <div id="BuddyBalanceApp">
       <div class="container">
-        <div class="content">
+        <div class="content"></div>
       </div>
     </div>
     <!-- Template for the "sign out" part at the top -->
@@ -72,8 +72,7 @@
           <input type="text" id="transaction-amount" placeholder="Amount (example: 34.50)" />
           <input type="text" id="transaction-memo" placeholder="Memo (example: Beer)" />
           <button class="btn btn-inverse enter-transaction">
-            <i class="icon-retweet icon-white"></i>
-            Balance!
+            <i class="icon-retweet icon-white"></i> Balance!
           </button>
         </div>
         <div class="span6">
@@ -96,7 +95,7 @@
     <script type="text/template" id="balance-template">
       <td><%= amount > 0 ? "OWES YOU" : "YOU OWE" %></td>
       <td><%= targetUser %></td>
-      <td>$ <%= amount %></td>
+      <td>$ <%= Math.abs(amount).toFixed(2) %></td>
     </script>
     <!-- Individual Transaction Item Template -->
     <script type="text/template" id="transaction-template"> 
