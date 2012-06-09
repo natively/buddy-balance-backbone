@@ -81,7 +81,7 @@ $(function() {
       this.balances = new BalanceList();
       this.balances.query = new Parse.Query(Balance);
       this.balances.query.equalTo("user", Parse.User.current());
-      
+
       this.balances.bind('all',   this.renderBalances);
       this.balances.fetch();
 
@@ -138,10 +138,18 @@ $(function() {
       if(this.$("#to-me").hasClass("active")) {
         tAmount *= -1;
       }
+      tUser = this.$("#transaction-target").val();
+
+      // write and substitute this here:
+      // validateUser();
+
+      if(isNaN(tAmount) || tUser === "") {
+        return;
+      }
       this.transactions.create({
         amount: tAmount,
         memo: this.$("#transaction-memo").val(),
-        targetUser: this.$("#transaction-target").val(),
+        targetUser: tUser,
         user: Parse.User.current(),
         ACL: new Parse.ACL(Parse.User.current())
       })
