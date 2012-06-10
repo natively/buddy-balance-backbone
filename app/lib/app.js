@@ -30,6 +30,9 @@ $(function() {
   var Transaction = Parse.Object.extend("Transaction", {
     defaults: {
       confirmed: true
+    },
+    validateSelf: function() {
+      return (!isNaN(tAmount) && tUser !== "" );
     }
   });
 
@@ -84,6 +87,9 @@ $(function() {
 
       this.balances.bind('all',   this.renderBalances);
       this.balances.fetch();
+
+      // Get Buddy List for the User
+      this.buddies = Parse.User.current().get("buddies");
 
       // Draw
       this.$el.html(_.template($("#main-view-template").html()));
@@ -140,26 +146,18 @@ $(function() {
       }
       tUser = this.$("#transaction-target").val();
 
-      // write and substitute this here:
-      // t = new Transaction({
-      //   amount: tAmount,
-      //   memo: this.$("#transaction-memo").val(),
-      //   targetUser: tUser,
-      //   user: Parse.User.current(),
-      //   ACL: new Parse.ACL(Parse.User.current())
-      // });
-      // validateTransaction(t);
-
-      if(isNaN(tAmount) || tUser === "") {
-        return;
-      }
-      this.transactions.create({
+      t = new Transaction({
         amount: tAmount,
         memo: this.$("#transaction-memo").val(),
         targetUser: tUser,
         user: Parse.User.current(),
         ACL: new Parse.ACL(Parse.User.current())
-      })
+      });
+
+      if( t.validateSelf() ) {
+        this.transactions.add(t);
+        t.save();
+      }
       this.$("input").val('');
     }
   });
