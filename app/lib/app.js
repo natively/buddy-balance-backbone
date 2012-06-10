@@ -141,7 +141,14 @@ $(function() {
       tUser = this.$("#transaction-target").val();
 
       // write and substitute this here:
-      // validateUser();
+      // t = new Transaction({
+      //   amount: tAmount,
+      //   memo: this.$("#transaction-memo").val(),
+      //   targetUser: tUser,
+      //   user: Parse.User.current(),
+      //   ACL: new Parse.ACL(Parse.User.current())
+      // });
+      // validateTransaction(t);
 
       if(isNaN(tAmount) || tUser === "") {
         return;
@@ -226,10 +233,11 @@ $(function() {
       var user = new Parse.User();
 
       var username = this.$("#signup-email").val();
+      var fullname = this.$("#signup-name").val();
       var email = this.$("#signup-email").val();
       var password = this.$("#signup-password").val();
 
-      Parse.User.signUp(username, password, { ACL: new Parse.ACL(), email: email }, {
+      Parse.User.signUp(username, password, { ACL: new Parse.ACL(), email: email, name: fullname }, {
         success: function(user) {
           new ManageTransactionsView();
           new UserView();
