@@ -58,11 +58,11 @@ $(function() {
     el: ".content",
     
     initialize: function() {
-
       _.bindAll(this,
         'enterTransaction',
         'reBalance',
         'renderBalances',
+        'buddyList',
         'addOneTransaction',
         'addAll',
         'render'
@@ -76,6 +76,7 @@ $(function() {
 
       this.transactions.bind('add',     this.addOneTransaction);
       this.transactions.bind('add',     this.reBalance);
+      this.transactions.bind('reset',   this.buddyList);
       this.transactions.bind('reset',   this.addAll);
       this.transactions.bind('all',     this.render);
       this.transactions.fetch();
@@ -85,11 +86,8 @@ $(function() {
       this.balances.query = new Parse.Query(Balance);
       this.balances.query.equalTo("user", Parse.User.current());
 
-      this.balances.bind('all',   this.renderBalances);
+      this.balances.bind('all', this.renderBalances);
       this.balances.fetch();
-
-      // Get Buddy List for the User
-      this.buddies = Parse.User.current().get("buddies");
 
       // Draw
       this.$el.html(_.template($("#main-view-template").html()));
@@ -98,6 +96,12 @@ $(function() {
 
     render: function() {
       this.delegateEvents();
+    },
+
+    buddyList: function(collection, filter) {
+      this.$(".typeahead").typeahead({
+        source: collection.pluck("targetUser")
+      });
     },
 
     renderBalances: function() {
@@ -135,7 +139,7 @@ $(function() {
     },
 
     addAll: function(collection, filter) {
-      this.$(".recent-transction-list").empty();
+      this.$(".recent-transaction-list").empty();
       this.transactions.each(this.addOneTransaction);
     },
 
@@ -145,15 +149,14 @@ $(function() {
         tAmount *= -1;
       }
       tUser = this.$("#transaction-target").val();
-
+      tMemo = this.$("#transaction-memo").val()
       t = new Transaction({
         amount: tAmount,
-        memo: this.$("#transaction-memo").val(),
+        memo: tMemo,
         targetUser: tUser,
         user: Parse.User.current(),
         ACL: new Parse.ACL(Parse.User.current())
       });
-
       if( t.validateSelf() ) {
         this.transactions.add(t);
         t.save();
@@ -262,8 +265,6 @@ $(function() {
 
   // The main view for the app
   var AppView = Parse.View.extend({
-    // Instead of generating a new element, bind to the existing skeleton of
-    // the App already present in the HTML.
     el: $("#BuddyBalanceApp"),
 
     initialize: function() {

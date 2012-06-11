@@ -61,13 +61,13 @@
       <div class="row">
         <div class="span3 new-transaction">
           <h6>New Transaction</h6>
-          <input type="text" id="transaction-target" placeholder="Buddy's Email" />
+          <input type="text" id="transaction-target" class="typeahead" placeholder="Buddy's Email" />
           <div class="btn-group" data-toggle="buttons-radio">
             <button class="btn btn-left" id="to-me">
-              <i class="icon-download"></i> Paid Me
+              <i class="icon-star"></i> Paid Me
             </button>
             <button class="btn btn-white active" id="to-them">
-              <i class="icon-upload"></i> Paid Them
+              <i class="icon-star-empty"></i> Paid Them
             </button>
           </div>
           <input type="text" id="transaction-amount" placeholder="Amount (example: 34.50)" />
@@ -80,15 +80,21 @@
           <h6>Outstanding Balances</h6>
             <table class="table outstanding-balances-list">
               <tr class="header-row">
-                <th>Status</th>
+                <th class="th-status">Status</th>
                 <th>Buddy</th>
-                <th>Balance</th>
+                <th>
+                  <div class="pull-right">
+                    Balance
+                  </div>
+                </th>
               </tr>
             </table>
         </div>
         <div class="span3">
           <h6>Recent Transactions</h6>
-          <ul class="unstyled recent-transaction-list"></ul>
+          <ul class="unstyled recent-transaction-list">
+            <img src="img/wait18trans.gif" />
+          </ul>
         </div>
       </div>
     </script>
@@ -96,11 +102,15 @@
     <script type="text/template" id="balance-template">
       <td><%= amount > 0 ? "OWES YOU" : "YOU OWE" %></td>
       <td><%= targetUser %></td>
-      <td>$ <%= Math.abs(amount).toFixed(2) %></td>
+      <td>
+        <div class="pull-right">
+          $ <%= Math.abs(amount).toFixed(2) %>
+        </div>
+      </td>
     </script>
     <!-- Individual Transaction Item Template -->
     <script type="text/template" id="transaction-template"> 
-      $ <%= amount %>
+      $ <%= amount.toFixed(2) %>
       <%= targetUser %>
       <%= memo %>
     </script>
