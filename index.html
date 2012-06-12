@@ -10,7 +10,7 @@
     <!-- Javascripts -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="app/lib/underscore-min.js"></script>
-    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.0.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.3.min.js"></script>
     <script type="text/javascript" src="app/lib/bootstrap.js"></script>
     <script type="text/javascript" src="app/lib/app.js"></script>
     <script type="text/javascript" src="app/lib/ui.js"></script>
@@ -90,8 +90,8 @@
         </div>
         <div class="span9">
           <ul class="nav nav-tabs">
-            <li>
-              <a href="#outstanding-balances-list" data-toggle="tab" class="active">
+            <li class="active">
+              <a href="#outstanding-balances-list" data-toggle="tab">
                 <h6>Balances</h6>
               </a>
             </li>
@@ -108,9 +108,7 @@
                   <th class="th-status">Status</th>
                   <th>Buddy</th>
                   <th>
-                    <div class="pull-right">
-                      Balance
-                    </div>
+                    <div class="pull-right">Balance</div>
                   </th>
                 </tr>
               </table>
@@ -120,9 +118,7 @@
                 <tr class="header-row">
                   <th>Buddy</th>
                   <th>Amount</th>
-                  <th>
-                    Memo
-                  </th>
+                  <th>Memo</th>
                 </tr>
               </table>
             </div>
@@ -144,9 +140,7 @@
     <script type="text/template" id="transaction-template"> 
       <td><%= targetUser %></td>
       <td>$ <%= amount.toFixed(2) %></td>
-      <td>
-        Memo
-      </td>
+      <td><%= memo %></td>
     </script>
   </body>
 </html>
