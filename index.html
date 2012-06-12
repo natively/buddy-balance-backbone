@@ -13,6 +13,7 @@
     <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.0.min.js"></script>
     <script type="text/javascript" src="app/lib/bootstrap.js"></script>
     <script type="text/javascript" src="app/lib/app.js"></script>
+    <script type="text/javascript" src="app/lib/ui.js"></script>
   </head>
   <body>
     <!-- Navigation -->
@@ -56,6 +57,13 @@
           <button class="btn btn-primary">Sign Up</button>
         </form>
       </div>
+      <footer>
+      <div class="container">
+        <h5>
+          A <a href="http://pause-break.net">Pause|Break</a>, LLC invocation
+        </h5>
+      </div>
+    </footer>
     </script>
     <!-- New Transaction Template -->
     <script type="text/template" id="main-view-template">
@@ -80,25 +88,39 @@
             <i class="icon-retweet icon-white"></i> Balance!
           </button>
         </div>
-        <div class="span6">
-          <h6>Outstanding Balances</h6>
-            <table class="table outstanding-balances-list">
-              <tr class="header-row">
-                <th class="th-status">Status</th>
-                <th>Buddy</th>
-                <th>
-                  <div class="pull-right">
-                    Balance
-                  </div>
-                </th>
-              </tr>
-            </table>
-        </div>
-        <div class="span3">
-          <h6>Recent Transactions</h6>
-          <ul class="unstyled recent-transaction-list">
-            <img src="img/wait18trans.gif" />
+        <div class="span9">
+          <ul class="nav nav-tabs">
+            <li>
+              <a href="#outstanding-balances-list" data-toggle="tab" class="active">
+                <h6>outstanding-balances-list</h6>
+              </a>
+            </li>
+            <li>
+              <a href="#recent-transaction-list" data-toggle="tab">
+                <h6>Recent Transactions</h6>
+              </a>
+            </li>
           </ul>
+          <div class="tab-content">
+            <div id="outstanding-balances-list" class="tab-pane">
+              <table class="table outstanding-balances-list">
+                <tr class="header-row">
+                  <th class="th-status">Status</th>
+                  <th>Buddy</th>
+                  <th>
+                    <div class="pull-right">
+                      Balance
+                    </div>
+                  </th>
+                </tr>
+              </table>
+            </div>
+            <div id="recent-transaction-list" class="tab-pane">
+              <ul class="unstyled recent-transaction-list">
+                <img src="img/wait18trans.gif" />
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </script>

@@ -100,7 +100,7 @@ $(function() {
 
     buddyList: function(collection, filter) {
       this.$(".typeahead").typeahead({
-        source: collection.pluck("targetUser")
+        source: _.uniq(collection.pluck("targetUser"))
       });
     },
 
