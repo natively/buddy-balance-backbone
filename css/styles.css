@@ -7369,6 +7369,12 @@ h6 {
 .owes-you {
   color: #46a546;
 }
+.nav {
+  margin-bottom: 9px;
+}
+.table th {
+  border-top: 0px;
+}
 .th-status {
   width: 75px;
 }

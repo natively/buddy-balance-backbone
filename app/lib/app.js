@@ -41,7 +41,7 @@ $(function() {
   });
 
   var TransactionView = Parse.View.extend({
-    tagName: "li",
+    tagName: "tr",
     template: _.template($('#transaction-template').html()),
     initialize: function() {},
     render: function() {
@@ -105,7 +105,7 @@ $(function() {
     },
 
     renderBalances: function() {
-      this.$("tr").not(".header-row").empty();
+      this.$("#outstanding-balances-list tr").not(".header-row").empty();
       this.balances.each(function(balance) {
         var view = new BalanceView({model: balance});
         this.$(".outstanding-balances-list").append(view.render().el);  
@@ -139,7 +139,7 @@ $(function() {
     },
 
     addAll: function(collection, filter) {
-      this.$(".recent-transaction-list").empty();
+      this.$(".recent-transaction-list tr").not(".header-row").empty();
       this.transactions.each(this.addOneTransaction);
     },
 

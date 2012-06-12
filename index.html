@@ -116,9 +116,15 @@
               </table>
             </div>
             <div id="recent-transaction-list" class="tab-pane">
-              <ul class="unstyled recent-transaction-list">
-                <img src="img/wait18trans.gif" />
-              </ul>
+              <table class="table recent-transaction-list">
+                <tr class="header-row">
+                  <th>Buddy</th>
+                  <th>Amount</th>
+                  <th>
+                    Memo
+                  </th>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -136,9 +142,11 @@
     </script>
     <!-- Individual Transaction Item Template -->
     <script type="text/template" id="transaction-template"> 
-      $ <%= amount.toFixed(2) %>
-      <%= targetUser %>
-      <%= memo %>
+      <td><%= targetUser %></td>
+      <td>$ <%= amount.toFixed(2) %></td>
+      <td>
+        Memo
+      </td>
     </script>
   </body>
 </html>
