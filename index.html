@@ -41,18 +41,19 @@
     <!-- Login/Signup Template -->
     <script type="text/template" id="login-template">
       <div class="login hero-unit">
+        <h3>Welcome!</h3>
         <form class="login-form">
           <div class="error" style="display:none"></div>
           <input type="text" id="login-username" placeholder="Email" />
           <input type="password" id="login-password" placeholder="Password" />
-          <button class="btn btn-inverse">Log In</button>
+          <button class="btn">Log In</button>
         </form>
         <form class="signup-form">
           <div class="error" style="display:none"></div>
           <input type="text" id="signup-name" placeholder="Full Name" />
           <input type="text" id="signup-email" placeholder="Email" />
           <input type="password" id="signup-password" placeholder="Password" />
-          <button class="btn">Sign Up</button>
+          <button class="btn btn-primary">Sign Up</button>
         </form>
       </div>
     </script>
@@ -61,17 +62,20 @@
       <div class="row">
         <div class="span3 new-transaction">
           <h6>New Transaction</h6>
-          <input type="text" id="transaction-target" class="typeahead" placeholder="Buddy's Email" />
+          <input type="text" id="transaction-target" class="typeahead span3"
+            placeholder="Buddy's Email" />
           <div class="btn-group" data-toggle="buttons-radio">
-            <button class="btn btn-left" id="to-me">
+            <button class="btn" id="to-me">
               <i class="icon-star"></i> Paid Me
             </button>
-            <button class="btn btn-white active" id="to-them">
+            <button class="btn active" id="to-them">
               <i class="icon-star-empty"></i> Paid Them
             </button>
           </div>
-          <input type="text" id="transaction-amount" placeholder="Amount (example: 34.50)" />
-          <input type="text" id="transaction-memo" placeholder="Memo (example: Beer)" />
+          <input type="text" id="transaction-amount" class="span3" 
+            placeholder="Amount (example: 34.50)" />
+          <input type="text" id="transaction-memo" class="span3"
+            placeholder="Memo (example: Beer)" />
           <button class="btn btn-inverse enter-transaction">
             <i class="icon-retweet icon-white"></i> Balance!
           </button>
