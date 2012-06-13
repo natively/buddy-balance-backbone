@@ -10,7 +10,7 @@
     <!-- Javascripts -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="app/lib/underscore-min.js"></script>
-    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.3.min.js"></script>
+    <script type="text/javascript" src="app/lib/parse-1.0.3.js"></script>
     <script type="text/javascript" src="app/lib/bootstrap.js"></script>
     <script type="text/javascript" src="app/lib/app.js"></script>
     <script type="text/javascript" src="app/lib/ui.js"></script>
@@ -65,7 +65,7 @@
       </div>
     </footer>
     </script>
-    <!-- New Transaction Template -->
+    <!-- Manage Template (Main View) -->
     <script type="text/template" id="main-view-template">
       <div class="row">
         <div class="span3 new-transaction">
@@ -76,9 +76,9 @@
             <button class="btn" id="to-me">
               <i class="icon-star"></i> Paid Me
             </button>
-            <button class="btn active" id="to-them">
-              <i class="icon-star-empty"></i> Paid Them
-            </button>
+              <button class="btn active" id="to-them">
+                <i class="icon-star-empty"></i> Paid Them
+              </button>
           </div>
           <input type="text" id="transaction-amount" class="span3" 
             placeholder="Amount (example: 34.50)" />
