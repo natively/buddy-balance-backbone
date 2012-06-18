@@ -5,7 +5,11 @@ $(function() {
   // Initialize Parse with your Parse application javascript keys
   Parse.initialize("U4AEUFjfLftt6fySkUiRYyowbG4I5ZrhG4zAAzDD",
                    "8fCPiULZWzp56JjXgOe0sIyKPRW17Z5oFyxJj4Wn");
-  
+
+  var BuddyList = Parse.Collection.extend({
+    model: Parse.User
+  });
+
   var Balance = Parse.Object.extend("Balance", {
   });
 
@@ -68,6 +72,9 @@ $(function() {
         'render'
       );
 
+      // be lazy :)
+      var self = this;
+
       // Get transactions for the user
       this.transactions = new TransactionList();
 
@@ -88,6 +95,18 @@ $(function() {
 
       this.balances.bind('all', this.renderBalances);
       this.balances.fetch();
+
+      // Get the user's buddy list
+      this.buddyList = new BuddyList();
+      Parse.User.current().fetch({
+        success: function( user ) {
+          self.buddyList.query = user.relation("buddies").query();
+          self.buddyList.fetch();
+        },
+        error: function( obj, err ) {
+          console.log( "error! " + err );
+        }
+      });
 
       // Draw
       this.$el.html(_.template($("#main-view-template").html()));
@@ -157,9 +176,41 @@ $(function() {
         user: Parse.User.current(),
         ACL: new Parse.ACL(Parse.User.current())
       });
+
       if( t.validateSelf() ) {
         this.transactions.add(t);
         t.save();
+
+        // Add target to the user's buddy list
+        buddyEmailList = this.buddyList.pluck("username");
+        if( _.include(buddyEmailList, tUser) ) {
+          // buddy already on the buddy list, add a transaction to them
+        }
+        else {
+          // no user in the list, create them and add them to the list
+          var q = new Parse.Query( Parse.User );
+          q.equalTo("username", tUser);
+          q.find({
+            // user was found
+            success: function(u) {
+              console.log("User found");
+              Parse.User.current().relation("buddies").add(u);
+              Parse.User.current().save();/*
+                null,
+                {
+                  success: function() {
+
+                  }
+                }
+              );*/
+            },
+            // no user found, sign them up? lol
+            error: function(e, o) {
+              console.log("User not found");
+            }
+          })
+        }
+
       }
       this.$("input").val('');
     }
@@ -237,8 +288,10 @@ $(function() {
       var fullname = this.$("#signup-name").val();
       var email = this.$("#signup-email").val();
       var password = this.$("#signup-password").val();
+      var acl = new Parse.ACL();
+      acl.setPublicReadAccess(true);
 
-      Parse.User.signUp(username, password, { ACL: new Parse.ACL(), email: email, name: fullname }, {
+      Parse.User.signUp(username, password, { ACL: acl, email: email, name: fullname }, {
         success: function(user) {
           new ManageTransactionsView();
           new UserView();
