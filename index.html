@@ -5,18 +5,26 @@
     <meta charset="utf-8">
     <meta name="description" content="My Parse App">
     <meta name="viewport" content="width=device-width">
-    <!-- Stylesheets -->
+
+    <!--
+      Stylesheets
+      -->
     <link href="css/styles.css" rel="stylesheet" type="text/css" >
-    <!-- Javascripts -->
+    
+    <!--
+      Scripts
+      -->
     <script type="text/javascript"
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="app/lib/underscore.js"></script>
-    <script type="text/javascript" src="app/lib/parse-1.0.3.js"></script>
-    <script type="text/javascript" src="app/lib/bootstrap.js"></script>
-    <script type="text/javascript" src="app/lib/app.js"></script>
+    <script type="text/javascript" src="lib/underscore.js"></script>
+    <script type="text/javascript" src="lib/parse-1.0.3.js"></script>
+    <script type="text/javascript" src="lib/bootstrap.js"></script>
+    <script type="text/javascript" src="lib/app.js"></script>
   </head>
   <body>
-    <!-- Navigation -->
+    <!--
+      Navigation
+      -->
     <header>
       <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
@@ -28,18 +36,27 @@
         </div>
       </div>
     </header>
-    <!-- Main Container - Everything goes here -->
+
+    <!--
+      Main Container - Everything goes inside.
+      -->
     <div id="BuddyBalanceApp">
       <div class="container">
         <div class="content"></div>
       </div>
     </div>
-    <!-- Template for the "sign out" part at the top -->
+
+    <!--
+      Template for the "sign out" part at the top
+      -->
     <script type="text/template" id="user-template">
       Signed in as <%= Parse.User.current().get("username") %>
       (<a href="#" class="sign-out" >Sign Out</a>)
     </script>
-    <!-- Login/Signup Template -->
+
+    <!--
+      Login/Signup Template 
+      -->
     <script type="text/template" id="login-template">
       <div class="login hero-unit">
         <h3>Welcome!</h3>
@@ -58,14 +75,17 @@
         </form>
       </div>
       <footer>
-      <div class="container">
-        <h5>
-          A <a href="http://pause-break.net">Pause|Break</a>, LLC invocation
-        </h5>
-      </div>
-    </footer>
+        <div class="container">
+          <h5>
+            A <a href="http://pause-break.net">Pause|Break</a>, LLC invocation
+          </h5>
+        </div>
+      </footer>
     </script>
-    <!-- Manage Template (Main View) -->
+
+    <!-- 
+      Manage Template (Main View)
+      -->
     <script type="text/template" id="main-view-template">
       <div class="row">
         <div class="span3 new-transaction">
@@ -126,7 +146,10 @@
         </div>
       </div>
     </script>
-    <!-- Individual Balance Item Template -->
+
+    <!--
+      Individual Balance Item Template
+      -->
     <script type="text/template" id="balance-template">
       <td><%= amount > 0 ? "OWES YOU" : "YOU OWE" %></td>
       <td><%= targetUser %></td>
@@ -136,7 +159,10 @@
         </div>
       </td>
     </script>
-    <!-- Individual Transaction Item Template -->
+
+    <!--
+      Individual Transaction Item Template
+      -->
     <script type="text/template" id="transaction-template"> 
       <td><%= targetUser %></td>
       <td>$ <%= amount.toFixed(2) %></td>
