@@ -31,15 +31,17 @@ def packit
     f.puts output
     f.puts "});"
   end
+
+  puts "#{Time.now.ctime} successfully wrote to #{output_name}"
 end
 
 # run the script on load
+puts "Packit is now watching your #{$root_dir} directory for changes."
 packit
 
 # watch the $root_dir for updates and rerun packit accordingly
 FSSM.monitor($root_dir) do
   update do
     packit
-    puts "Success!"
   end
 end

@@ -150,7 +150,6 @@ var ManageTransactionsView = Parse.View.extend({
           }
         });
       }
-
     }
     this.$("input").val('');
   }
