@@ -9,7 +9,7 @@ $file_list = %w{
   app/collections/balancelist.js
   app/collections/buddylist.js
   app/collections/transactionlist.js
-  app/collections/pending.js
+  app/collections/pendinglist.js
   app/views/balanceview.js
   app/views/transactionview.js
   app/views/userview.js
