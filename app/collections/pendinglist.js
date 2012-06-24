@@ -1,3 +1,3 @@
 var PendingList = Parse.Collection.extend({
-  model: PendingList
+  model: Transaction
 });
