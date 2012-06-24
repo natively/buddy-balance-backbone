@@ -120,6 +120,11 @@
                 <h6>Recent Transactions</h6>
               </a>
             </li>
+            <li>
+              <a href="#pending-list" data-toggle="tab">
+                <h6>Pending</h6>
+              </a>
+            </li>
           </ul>
           <div class="tab-content">
             <div id="outstanding-balances-list" class="tab-pane active">
@@ -135,6 +140,15 @@
             </div>
             <div id="recent-transaction-list" class="tab-pane">
               <table class="table recent-transaction-list">
+                <tr class="header-row">
+                  <th>Buddy</th>
+                  <th>Amount</th>
+                  <th>Memo</th>
+                </tr>
+              </table>
+            </div>
+            <div id="pending-list" class="tab-pane">
+              <table class="table pending-list">
                 <tr class="header-row">
                   <th>Buddy</th>
                   <th>Amount</th>

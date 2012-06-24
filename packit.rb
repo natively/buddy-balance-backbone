@@ -5,9 +5,11 @@ $file_list = %w{
   app/init.js
   app/models/balance.js
   app/models/transaction.js
+  app/models/pending.js
   app/collections/balancelist.js
   app/collections/buddylist.js
   app/collections/transactionlist.js
+  app/collections/pending.js
   app/views/balanceview.js
   app/views/transactionview.js
   app/views/userview.js
